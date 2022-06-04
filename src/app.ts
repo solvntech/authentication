@@ -1,9 +1,9 @@
 import express, { Request, Response } from 'express';
 import { NotFound } from 'http-errors';
 import morgan from 'morgan';
-import { authRoute } from './routes';
-import { connectDB } from './helpers';
-import { CONFIG } from './config/config';
+import { authRoute } from '@routes/index';
+import { connectDB } from '@helpers/index';
+import { CONFIG } from '@config/config';
 
 const app = express();
 

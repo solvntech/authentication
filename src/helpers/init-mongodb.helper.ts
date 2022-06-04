@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { CONFIG } from '../config/config';
+import { CONFIG } from '@config/config';
 
 mongoose.connection.on('connected', () => {
     console.log('Mongoose connected to db');

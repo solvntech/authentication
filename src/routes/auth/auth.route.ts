@@ -1,33 +1,9 @@
 import express, { NextFunction, Request, Response } from 'express';
-import { BadRequest, Conflict } from 'http-errors';
-import { User } from '../../models';
-import { userValidator } from '../../validators';
-import { JoiValidatorHelper } from '../../helpers';
+import { AuthController } from '@controllers/auth/auth.controller';
 
 const router = express.Router();
 
-router.post('/register', async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const { email, password } = req.body;
-        const validate = await JoiValidatorHelper.check(userValidator, req.body);
-
-        if (!validate.isValid) {
-            return next(validate.error);
-        }
-
-        const isExisted = await User.findOne({ email });
-
-        if (isExisted) {
-            return next(new Conflict(`${email} is already been registered`));
-        }
-
-        const user = new User(validate.result);
-
-        res.send(await user.save());
-    } catch (e) {
-        next(e);
-    }
-});
+router.post('/register', AuthController.register);
 
 router.post('/login', async (req: Request, res: Response, next: NextFunction) => {
     res.send('Login route');

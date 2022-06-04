@@ -4,6 +4,8 @@ import morgan from 'morgan';
 import { authRoute } from '@routes/index';
 import { connectDB } from '@helpers/index';
 import { CONFIG } from '@config/config';
+import { AuthMiddleware } from '@middlewares/auth/auth.middleware';
+import _ from 'lodash';
 
 const app = express();
 
@@ -15,7 +17,8 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/auth', authRoute);
 
-app.get('/', (req: Request, res: Response) => {
+app.get('/', AuthMiddleware.verifyAccessToken, async (req: Request, res: Response, next) => {
+    console.log(_.get(req, 'payload'));
     return res.json({
         success: true,
         version: '1.1.2',

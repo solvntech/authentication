@@ -21,7 +21,7 @@ export class AuthController {
 
             const user = new User(validate.result);
             const saveUser = await user.save();
-            const accessToken = await JwtHelper.signAccessToken(saveUser.id);
+            const accessToken = await JwtHelper.signAccessToken(saveUser.id, validate.result.email);
 
             res.send({
                 id: saveUser.id,
@@ -56,7 +56,7 @@ export class AuthController {
                 return next(new Unauthorized('Username/Password is invalid'));
             }
 
-            const accessToken = await JwtHelper.signAccessToken(user.id);
+            const accessToken = await JwtHelper.signAccessToken(user.id, validate.result.email);
 
             res.send({
                 id: user.id,

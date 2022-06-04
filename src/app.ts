@@ -13,7 +13,7 @@ app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/auth', authRoute)
+app.use('/auth', authRoute);
 
 app.get('/', (req: Request, res: Response) => {
     return res.json({

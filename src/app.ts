@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 import morgan from 'morgan';
 import { authRoute } from '@routes/index';
-import { connectDB } from '@helpers/index';
+import { cache, connectDB } from '@helpers/index';
 import { CONFIG } from '@config/config';
 import { AuthMiddleware } from '@middlewares/auth/auth.middleware';
 import _ from 'lodash';

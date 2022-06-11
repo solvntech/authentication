@@ -11,8 +11,19 @@ services:
     volumes:
       - mongo_db:/data/db
 
+  cache:
+    container_name: redis_cache
+    image: redis:alpine
+    restart: always
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning
+    volumes:
+      - cache:/data
+
   # Node API service
   api:
+    container_name: node_server
     build: .
     ports:
       - "3000:3000"
@@ -29,3 +40,5 @@ services:
 
 volumes:
   mongo_db: {}
+  cache:
+    driver: local

@@ -19,7 +19,8 @@
         "lodash": "^4.17.21",
         "mongoose": "^6.3.4",
         "morgan": "^1.10.0",
-        "nodemon": "^2.0.16"
+        "nodemon": "^2.0.16",
+        "redis": "^4.1.0"
     },
     "devDependencies": {
         "@types/bcrypt": "^5.0.0",
@@ -30,6 +31,7 @@
         "@types/lodash": "^4.14.182",
         "@types/mongoose": "^5.11.97",
         "@types/morgan": "^1.9.3",
+        "@types/redis": "^4.0.11",
         "ts-node": "^10.8.0",
         "tsconfig-paths": "^4.0.0",
         "typescript": "^4.7.2"

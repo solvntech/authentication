@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { JoiValidatorHelper, JwtHelper } from '@helpers/index';
+import { JoiValidatorHelper, JwtHelper, ResponseHelper } from '@helpers/index';
 import { userValidator } from '@validators/index';
 import { User } from '@models/index';
 import { Conflict, NotFound, Unauthorized } from 'http-errors';
@@ -21,13 +21,13 @@ export class AuthController {
 
             const user = new User(validate.result);
             const saveUser = await user.save();
-            const accessToken = await JwtHelper.signAccessToken(saveUser.id, validate.result.email);
 
-            res.send({
-                id: saveUser.id,
-                email: saveUser.email,
-                accessToken: accessToken,
-            });
+            res.send(
+                ResponseHelper.OK({
+                    id: saveUser.id,
+                    email: saveUser.email,
+                })
+            );
         } catch (e) {
             next(e);
         }
@@ -57,12 +57,16 @@ export class AuthController {
             }
 
             const accessToken = await JwtHelper.signAccessToken(user.id, validate.result.email);
+            const refreshToken = await JwtHelper.signRefreshToken(user.id);
 
-            res.send({
-                id: user.id,
-                email: user.email,
-                accessToken: accessToken,
-            })
+            res.send(
+                ResponseHelper.OK({
+                    id: user.id,
+                    email: user.email,
+                    accessToken,
+                    refreshToken,
+                })
+            );
         } catch (e: any) {
             next(e);
         }
@@ -70,7 +74,6 @@ export class AuthController {
 
     static async refreshToken(req: Request, res: Response, next: NextFunction) {
         try {
-
         } catch (e) {
             next(e);
         }
@@ -78,7 +81,6 @@ export class AuthController {
 
     static async logout(req: Request, res: Response, next: NextFunction) {
         try {
-
         } catch (e) {
             next(e);
         }

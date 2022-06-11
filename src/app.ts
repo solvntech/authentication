@@ -1,11 +1,11 @@
 import express, { Request, Response } from 'express';
-import { NotFound } from 'http-errors';
 import morgan from 'morgan';
 import { authRoute } from '@routes/index';
 import { connectDB } from '@helpers/index';
 import { CONFIG } from '@config/config';
 import { AuthMiddleware } from '@middlewares/auth/auth.middleware';
 import _ from 'lodash';
+import { ErrorHandlerMiddleware } from '@middlewares/error-handler/error-handler.middleware';
 
 const app = express();
 
@@ -30,19 +30,8 @@ app.post('/api/data', (req: Request, res: Response) => {
     return res.sendStatus(200);
 });
 
-app.use(async (req: Request, res: Response, next) => {
-    next(new NotFound('This route does not exist!'));
-});
-
-app.use((err: any, req: Request, res: Response, next: any) => {
-    res.status(err.status || 500);
-    res.send({
-        error: {
-            status: err.status || 500,
-            message: err.message,
-        },
-    });
-});
+app.use(ErrorHandlerMiddleware.routingNotFound);
+app.use(ErrorHandlerMiddleware.catchError);
 
 app.listen(CONFIG.PORT, () => {
     console.log(`Server running on http://localhost:${CONFIG.PORT}`);

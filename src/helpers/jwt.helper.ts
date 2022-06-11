@@ -20,6 +20,23 @@ export class JwtHelper {
         });
     }
 
+    static signRefreshToken(userId: string) {
+        return new Promise((resolve, reject) => {
+            const payload = { userId };
+            const options: jwt.SignOptions = {
+                expiresIn: '1d',
+            };
+
+            jwt.sign(payload, CONFIG.REFRESH_TOKEN_SECRET, options, (err, token) => {
+                if (err) {
+                    console.error(err);
+                    reject(new InternalServerError());
+                }
+                resolve(token);
+            });
+        });
+    }
+
     static async verifyAccessToken(token: string) {
         return new Promise((resolve, reject) => {
             jwt.verify(token, CONFIG.ACCESS_TOKEN_SECRET, (err, payload) => {

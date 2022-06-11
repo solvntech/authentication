@@ -41,12 +41,23 @@ export class JwtHelper {
         return new Promise((resolve, reject) => {
             jwt.verify(token, CONFIG.ACCESS_TOKEN_SECRET, (err, payload) => {
                 if (err) {
-                    console.log(err.name);
                     const msg = err.name === 'SyntaxError' ? 'SyntaxToken is invalid' : err.message;
                     reject(new Unauthorized(msg));
-                } else {
-                    resolve(payload);
                 }
+                resolve(payload);
+            })
+        })
+    }
+
+    static async verifyRefreshToken(refreshToken: string) {
+        return new Promise((resolve, reject) => {
+            jwt.verify(refreshToken, CONFIG.REFRESH_TOKEN_SECRET, (err: jwt.VerifyErrors | null, payload: any) => {
+                if (err) {
+                    const msg = err.name === 'SyntaxError' ? 'SyntaxToken is invalid' : err.message;
+                    reject(new Unauthorized(msg));
+                }
+                const { userId } = payload;
+                resolve(userId);
             })
         })
     }

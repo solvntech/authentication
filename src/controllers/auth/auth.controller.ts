@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { JoiValidatorHelper, JwtHelper, ResponseHelper } from '@helpers/index';
 import { userValidator } from '@validators/index';
 import { User } from '@models/index';
-import { Conflict, NotFound, Unauthorized } from 'http-errors';
+import { BadRequest, Conflict, NotFound, Unauthorized } from 'http-errors';
 
 export class AuthController {
     static async register(req: Request, res: Response, next: NextFunction) {
@@ -74,6 +74,18 @@ export class AuthController {
 
     static async refreshToken(req: Request, res: Response, next: NextFunction) {
         try {
+            const { refreshToken } = req.body;
+            if (!refreshToken) {
+                next(new BadRequest());
+            }
+            const userId = await JwtHelper.verifyRefreshToken(refreshToken) as string;
+            const token = await JwtHelper.signRefreshToken(userId);
+            res.send(
+                ResponseHelper.OK({
+                    id: userId,
+                    refreshToken: token,
+                })
+            );
         } catch (e) {
             next(e);
         }

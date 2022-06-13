@@ -6,10 +6,14 @@ import { CONFIG } from '@config/config';
 import { AuthMiddleware } from '@middlewares/auth/auth.middleware';
 import _ from 'lodash';
 import { ErrorHandlerMiddleware } from '@middlewares/error-handler/error-handler.middleware';
+import { EmailService } from './services';
 
 const app = express();
 
 connectDB();
+const transporter = EmailService.init();
+
+transporter.send('duchai9800ttbm@gmail.com', 'abc', 'abc')
 
 app.use(morgan('dev'));
 app.use(express.json());

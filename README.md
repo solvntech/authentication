@@ -34,7 +34,6 @@ _Coming soon..._
 * Install NodeJS 16 LTS: [https://nodejs.org/en/](https://nodejs.org/en/)
 
 ## Installation
-
 1. Clone the repo
    ```sh
    git clone https://github.com/solvntech/authentication.git
@@ -44,20 +43,21 @@ _Coming soon..._
    docker-compose up
    ```
    _turn off **`node_server`** container_
+    <img src="./images/docker.png" alt="Logo">
 3. Install NPM packages
    ```sh
    npm install
    ```
 4. Copy from `.env.example` to `.env` and configure in `.env`
    ```dotenv
-    PORT=[your application port]
-    MONGODB_URI=[mongo uri from docker]
-    DB_NAME=[db name]
-    ACCESS_TOKEN_SECRET=<ACCESS_TOKEN_SECRET>
-    REFRESH_TOKEN_SECRET=<REFRESH_TOKEN_SECRET>
-   
+    PORT=3000
+    MONGODB_URI=mongodb://localhost:2717
+    DB_NAME=auth_db
+    ACCESS_TOKEN_SECRET=[base64 string]
+    REFRESH_TOKEN_SECRET=[base64 string]
+    
     # email configs
     EMAIL_SERVICE=gmail
-    HOST_EMAIL=<email>
-    HOST_PASSWORD=<password>
+    HOST_EMAIL=[your email]
+    HOST_PASSWORD=[your email password]
    ```

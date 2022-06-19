@@ -21,22 +21,37 @@ export class EmailService {
 
     static init() {
         if (!this._instance) {
+            console.log('Init email service');
             this._instance = new EmailService();
         }
         return this._instance;
     }
 
-    send(email: string, subject: string, content: string) {
+    static get instance() {
+        return this._instance;
+    }
+
+    async send(email: string, subject: string, content: string, isHTML: boolean = false) {
         const emailOptions: Mail.Options = {
             from: CONFIG.HOST_EMAIL,
             to: email,
             subject: subject,
-            text: content
         }
-        this._transporter.sendMail(emailOptions).then((value) => {
+
+        if (isHTML) {
+            emailOptions.html = content;
+        } else {
+            emailOptions.text = content;
+        }
+
+        console.log(emailOptions);
+
+        return await this._transporter.sendMail(emailOptions).then((value) => {
             console.log(value);
+            return true;
         }, reason => {
             console.log(reason);
+            return false;
         })
     }
 }
